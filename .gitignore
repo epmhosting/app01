@@ -6,3 +6,5 @@ npm-debug.log
 data
 letsencrypt
 node_modules
+info.txt
+mongo

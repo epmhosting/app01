@@ -9,6 +9,8 @@ const path = require("path");
 
 const app = express();
 
+app.set('view engine', 'ejs');
+
 // support json encoded bodies
 app.use(bodyParser.json({
   limit: '5mb'
@@ -17,13 +19,20 @@ app.use(bodyParser.json({
 // support encoded bodies
 app.use(bodyParser.urlencoded({
   limit: '5mb',
-  extended: true
+  extended: false
 }));
 
 // Static Routes
 var publicPath = path.resolve(__dirname, "public");
 app.use('/', express.static(publicPath));
 
+
+var itemPath = path.resolve(__dirname, "apps/01-items/public");
+app.use('/item', express.static(itemPath));
+
+// Dynamic Routes
+var itemRouter = require("./apps/01-items/routes");
+app.use("/item", itemRouter);
 
 app.get('/hello', (req, res) => {
   console.log('GET /hello');
@@ -34,19 +43,18 @@ app.get('/hello', (req, res) => {
 
 const port = 3000;
 // app.listen(port, () => console.log(`01 - Server running on port ${port} .................`));
+
 http.createServer(function(req, res) {   
   // console.log(req.headers);
   console.log(req.headers['host']);
   console.log(req.url);
-  // res.writeHead(301, {"Location": "https://" + req.headers['host'] + req.url});
-  res.writeHead(301, {"Location": "https://docker.mightybest.com:8443" + req.url});
+  res.writeHead(301, {"Location": "https://" + req.headers['host'] + req.url});
+  // res.writeHead(301, {"Location": "https://docker.mightybest.com:8443" + req.url});
   res.end();
 }).listen(port, ()=> {
   console.log(`Server running...on port ${port}`)
   // console.log('hhhh');
 });
-
-
 
 https.createServer({
   // for aws, has /etc/letscencrypt

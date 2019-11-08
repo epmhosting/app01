@@ -15,16 +15,23 @@ services:
       # for local (no /etc/letsencrypt)
       # - ./letsencrypt:/usr/src/app/letsencrypt
     ports:
-      - '4000:3000'
-      - '8443:443'
-  #   links:
-  #     - mongo
-  #   depends_on:
-  #     - mongo
-  # mongo:
-  #   container_name: mongo
-  #   image: mongo:4
-  #   volumes:
-  #     - ./data:/data/db
-  #   ports:
-  #     - '27017:27017'
+      - '80:3000'
+      - '443:443'
+      # - '4000:3000'
+      # - '8443:443'
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    working_dir: /usr/src/app
+    stdin_open: true
+    tty: true
+    # command: node /usr/src/app/index.js
+    command: ["nodemon", "server.js"]
+  mongo:
+    container_name: mongo
+    image: mongo:4
+    volumes:
+      - ./mongo:/data/db
+    ports:
+      - '27017:27017'

@@ -3,4 +3,4 @@ src/npm-debug.log
 src/*.ori
 src/*.sh
 src/*copy*.*
-data
+mongo
