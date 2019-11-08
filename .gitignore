@@ -1,0 +1,8 @@
+npm-debug.log
+# app/*.ori
+*.ori
+*.sh
+*copy*
+data
+letsencrypt
+node_modules
